@@ -70,7 +70,7 @@
         <!-- ── Drop zone ─────────────────────────────────────────────────────── -->
         <Border x:Name="DropZone"
                 DockPanel.Dock="Top"
-                Height="80"
+                Height="120"
                 Background="{DynamicResource BrushPanel}"
                 BorderBrush="{DynamicResource BrushBorder}"
                 BorderThickness="1"
@@ -80,7 +80,8 @@
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        Foreground="{DynamicResource BrushMutedText}"
-                       FontSize="14"/>
+                       FontSize="18"
+                       IsHitTestVisible="False"/>
         </Border>
 
         <!-- ── Status bar ────────────────────────────────────────────────────── -->
