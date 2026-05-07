@@ -146,22 +146,6 @@
                      RowBackground="{DynamicResource BrushQueued}"
                      HorizontalScrollBarVisibility="Disabled">
 
-            <dg:DataGrid.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Cancel"           Command="{Binding $parent[Window].DataContext.CancelItemCommand}"
-                                                        CommandParameter="{Binding}"/>
-                    <MenuItem Header="Retry"            Command="{Binding $parent[Window].DataContext.RetryItemCommand}"
-                                                        CommandParameter="{Binding}"/>
-                    <MenuItem Header="Remove"           Command="{Binding $parent[Window].DataContext.RemoveItemCommand}"
-                                                        CommandParameter="{Binding}"/>
-                    <Separator/>
-                    <MenuItem Header="Copy URL"         Command="{Binding $parent[Window].DataContext.CopyUrlCommand}"
-                                                        CommandParameter="{Binding}"/>
-                    <MenuItem Header="Open output folder" Command="{Binding $parent[Window].DataContext.OpenItemFolderCommand}"
-                                                        CommandParameter="{Binding}"/>
-                </ContextMenu>
-            </dg:DataGrid.ContextMenu>
-
             <dg:DataGrid.Columns>
                 <dg:DataGridTextColumn Header="#"          Binding="{Binding Id}"           Width="38"/>
                 <dg:DataGridTextColumn Header="Title / URL" Binding="{Binding DisplayTitle}" Width="380"/>

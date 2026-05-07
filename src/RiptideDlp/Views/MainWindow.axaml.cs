@@ -115,6 +115,10 @@ public partial class MainWindow : Window
         // DataGrid keyboard
         DownloadGrid.KeyDown += OnGridKeyDown;
 
+        // Context menu — built in code-behind so commands get the actual row item
+        DownloadGrid.AddHandler(PointerPressedEvent, OnGridPointerPressed, handledEventsToo: true);
+        DownloadGrid.ContextMenu = BuildRowContextMenu();
+
         // Scroll log to bottom when new lines arrive
         Vm.LogLines.CollectionChanged += (_, _) =>
         {
@@ -178,6 +182,41 @@ public partial class MainWindow : Window
                 Vm.RemoveItemCommand.Execute(item);
             e.Handled = true;
         }
+    }
+
+    // ── DataGrid context menu ─────────────────────────────────────────────────
+
+    void OnGridPointerPressed(object? s, PointerPressedEventArgs e)
+    {
+        if (!e.GetCurrentPoint(null).Properties.IsRightButtonPressed) return;
+        var source = e.Source as Control;
+        while (source != null && source is not DataGridRow)
+            source = source.Parent as Control;
+        if (source is DataGridRow row && row.DataContext is DownloadItemViewModel item)
+            DownloadGrid.SelectedItem = item;
+    }
+
+    ContextMenu BuildRowContextMenu()
+    {
+        DownloadItemViewModel? Row() => DownloadGrid.SelectedItem as DownloadItemViewModel;
+        MenuItem Item(string header, Action<DownloadItemViewModel> act)
+        {
+            var mi = new MenuItem { Header = header };
+            mi.Click += (_, _) => { if (Row() is { } item) act(item); };
+            return mi;
+        }
+        return new ContextMenu
+        {
+            Items =
+            {
+                Item("Cancel",              item => Vm.CancelItemCommand.Execute(item)),
+                Item("Retry",               item => Vm.RetryItemCommand.Execute(item)),
+                Item("Remove",              item => Vm.RemoveItemCommand.Execute(item)),
+                new Separator(),
+                Item("Copy URL",            item => Vm.CopyUrlCommand.Execute(item)),
+                Item("Open output folder",  item => Vm.OpenItemFolderCommand.Execute(item)),
+            }
+        };
     }
 
     // ── About dialog ─────────────────────────────────────────────────────────
