@@ -35,7 +35,7 @@ jobs:
 
       - name: Publish ${{ matrix.rid }}
         run: |
-          dotnet publish src/YtDlpGui/YtDlpGui.csproj \
+          dotnet publish src/RiptideDlp/RiptideDlp.csproj \
             -c Release -r ${{ matrix.rid }} \
             --self-contained true \
             -p:PublishSingleFile=true \
@@ -46,18 +46,18 @@ jobs:
         if: matrix.rid == 'win-x64'
         run: |
           cd publish/${{ matrix.rid }}
-          zip -r ../../yt-dlp-gui-${{ github.ref_name }}-${{ matrix.os_name }}.zip .
+          zip -r ../../riptide-dlp-${{ github.ref_name }}-${{ matrix.os_name }}.zip .
 
       - name: Package (tar.gz)
         if: matrix.rid != 'win-x64'
         run: |
           cd publish/${{ matrix.rid }}
-          tar -czf ../../yt-dlp-gui-${{ github.ref_name }}-${{ matrix.os_name }}.tar.gz .
+          tar -czf ../../riptide-dlp-${{ github.ref_name }}-${{ matrix.os_name }}.tar.gz .
 
       - uses: actions/upload-artifact@v4
         with:
           name: release-${{ matrix.rid }}
-          path: yt-dlp-gui-${{ github.ref_name }}-${{ matrix.os_name }}.${{ matrix.ext }}
+          path: riptide-dlp-${{ github.ref_name }}-${{ matrix.os_name }}.${{ matrix.ext }}
 
   release:
     needs: build

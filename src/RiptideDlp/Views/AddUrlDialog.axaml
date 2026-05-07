@@ -1,0 +1,46 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:RiptideDlp.ViewModels"
+        x:Class="RiptideDlp.Views.AddUrlDialog"
+        x:DataType="vm:AddUrlViewModel"
+        Title="Add URLs"
+        Width="640" Height="220"
+        CanResize="False"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource BrushPanel}">
+
+    <DockPanel Margin="10">
+        <TextBlock DockPanel.Dock="Top"
+                   Text="Paste one or more URLs (one per line):"
+                   Foreground="{DynamicResource BrushText}"
+                   Margin="0,0,0,6"/>
+
+        <StackPanel DockPanel.Dock="Bottom"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Spacing="8"
+                    Margin="0,8,0,0">
+            <Button x:Name="BtnOk"
+                    Content="Add"
+                    Width="80"
+                    Background="{DynamicResource BrushAccent}"
+                    Foreground="White"
+                    IsDefault="True"/>
+            <Button x:Name="BtnCancel"
+                    Content="Cancel"
+                    Width="80"
+                    Background="{DynamicResource BrushBg}"
+                    Foreground="{DynamicResource BrushText}"
+                    IsCancel="True"/>
+        </StackPanel>
+
+        <TextBox AcceptsReturn="True"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 Background="{DynamicResource BrushBg}"
+                 Foreground="{DynamicResource BrushText}"
+                 FontFamily="Consolas,Courier New,monospace"
+                 FontSize="12"
+                 Text="{Binding UrlText}"/>
+    </DockPanel>
+
+</Window>

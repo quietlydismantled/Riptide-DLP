@@ -1,0 +1,6 @@
+#post migration fixes
+
+drag and drop doesnt work from explorer/browser (browse from files still works, maybe .net appt threading?)
+
+
+
