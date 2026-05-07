@@ -1,0 +1,74 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - rid: win-x64
+            os_name: windows
+            ext: zip
+          - rid: linux-x64
+            os_name: linux
+            ext: tar.gz
+          - rid: osx-x64
+            os_name: macos-x64
+            ext: tar.gz
+          - rid: osx-arm64
+            os_name: macos-arm64
+            ext: tar.gz
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Publish ${{ matrix.rid }}
+        run: |
+          dotnet publish src/YtDlpGui/YtDlpGui.csproj \
+            -c Release -r ${{ matrix.rid }} \
+            --self-contained true \
+            -p:PublishSingleFile=true \
+            -p:IncludeNativeLibrariesForSelfExtract=true \
+            -o publish/${{ matrix.rid }}
+
+      - name: Package (zip)
+        if: matrix.rid == 'win-x64'
+        run: |
+          cd publish/${{ matrix.rid }}
+          zip -r ../../yt-dlp-gui-${{ github.ref_name }}-${{ matrix.os_name }}.zip .
+
+      - name: Package (tar.gz)
+        if: matrix.rid != 'win-x64'
+        run: |
+          cd publish/${{ matrix.rid }}
+          tar -czf ../../yt-dlp-gui-${{ github.ref_name }}-${{ matrix.os_name }}.tar.gz .
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-${{ matrix.rid }}
+          path: yt-dlp-gui-${{ github.ref_name }}-${{ matrix.os_name }}.${{ matrix.ext }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/*
+          generate_release_notes: true

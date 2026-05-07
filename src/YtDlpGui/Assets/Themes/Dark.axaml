@@ -1,0 +1,43 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <!-- Colours from AppColors.Dark -->
+  <Color x:Key="ColorBg">#1E1E1E</Color>
+  <Color x:Key="ColorPanel">#282828</Color>
+  <Color x:Key="ColorBorder">#464646</Color>
+  <Color x:Key="ColorText">#DCDCDC</Color>
+  <Color x:Key="ColorMutedText">#787878</Color>
+  <Color x:Key="ColorAccent">#0096D7</Color>
+  <Color x:Key="ColorQueued">#2D2D2D</Color>
+  <Color x:Key="ColorDlBg">#19243C64</Color>
+  <Color x:Key="ColorDoneBg">#19194623</Color>
+  <Color x:Key="ColorErrBg">#5A1E1E</Color>
+  <Color x:Key="ColorCancelBg">#323232</Color>
+  <Color x:Key="ColorRowFg">#D2D2D2</Color>
+  <Color x:Key="ColorDropHover">#323246</Color>
+  <Color x:Key="ColorDanger">#6E1E1E</Color>
+  <Color x:Key="ColorSuccess">#1E5028</Color>
+  <Color x:Key="ColorLogBg">#0D0D0D</Color>
+  <Color x:Key="ColorLogText">#96DC82</Color>
+  <Color x:Key="ColorLogError">#FF6450</Color>
+
+  <SolidColorBrush x:Key="BrushBg"        Color="#1E1E1E"/>
+  <SolidColorBrush x:Key="BrushPanel"     Color="#282828"/>
+  <SolidColorBrush x:Key="BrushBorder"    Color="#464646"/>
+  <SolidColorBrush x:Key="BrushText"      Color="#DCDCDC"/>
+  <SolidColorBrush x:Key="BrushMutedText" Color="#787878"/>
+  <SolidColorBrush x:Key="BrushAccent"    Color="#0096D7"/>
+  <SolidColorBrush x:Key="BrushQueued"    Color="#2D2D2D"/>
+  <SolidColorBrush x:Key="BrushDlBg"      Color="#19243C64"/>
+  <SolidColorBrush x:Key="BrushDoneBg"    Color="#19194623"/>
+  <SolidColorBrush x:Key="BrushErrBg"     Color="#5A1E1E"/>
+  <SolidColorBrush x:Key="BrushCancelBg"  Color="#323232"/>
+  <SolidColorBrush x:Key="BrushRowFg"     Color="#D2D2D2"/>
+  <SolidColorBrush x:Key="BrushDropHover" Color="#323246"/>
+  <SolidColorBrush x:Key="BrushDanger"    Color="#6E1E1E"/>
+  <SolidColorBrush x:Key="BrushSuccess"   Color="#1E5028"/>
+  <SolidColorBrush x:Key="BrushLogBg"     Color="#0D0D0D"/>
+  <SolidColorBrush x:Key="BrushLogText"   Color="#96DC82"/>
+  <SolidColorBrush x:Key="BrushLogError"  Color="#FF6450"/>
+
+</ResourceDictionary>

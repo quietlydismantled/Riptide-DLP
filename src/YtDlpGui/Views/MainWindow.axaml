@@ -1,0 +1,185 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:YtDlpGui.ViewModels"
+        xmlns:models="using:YtDlpGui.Models"
+        xmlns:conv="using:YtDlpGui.Converters"
+        xmlns:dg="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls.DataGrid"
+        x:Class="YtDlpGui.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="{Binding WindowTitle}"
+        Width="1000" Height="680"
+        MinWidth="700" MinHeight="450"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource BrushBg}">
+
+    <Window.Resources>
+        <conv:DlStatusToBrushConverter x:Key="StatusBrush"/>
+    </Window.Resources>
+
+    <Window.KeyBindings>
+        <KeyBinding Gesture="Ctrl+O" Command="{Binding AddFileCommand}"/>
+        <KeyBinding Gesture="Ctrl+U" Command="{Binding AddUrlCommand}"/>
+        <KeyBinding Gesture="Ctrl+V" Command="{Binding PasteCommand}"/>
+    </Window.KeyBindings>
+
+    <DockPanel>
+
+        <!-- ── Menu ─────────────────────────────────────────────────────────── -->
+        <Menu DockPanel.Dock="Top" Background="{DynamicResource BrushPanel}">
+            <MenuItem Header="_File">
+                <MenuItem Header="Add _Files…"   Command="{Binding AddFileCommand}"     InputGesture="Ctrl+O"/>
+                <MenuItem Header="Add _URL…"     Command="{Binding AddUrlCommand}"      InputGesture="Ctrl+U"/>
+                <Separator/>
+                <MenuItem Header="E_xit"         Command="{Binding $parent[Window].Close}"/>
+            </MenuItem>
+            <MenuItem Header="_Options">
+                <MenuItem Header="_Settings…"    Command="{Binding ShowOptionsCommand}"/>
+                <MenuItem Header="_Dark mode"    Command="{Binding ToggleDarkModeCommand}"
+                          Icon="{Binding IsDarkMode, Converter={x:Static conv:BoolToCheckmarkConverter.Instance}}"/>
+                <MenuItem Header="Open _output folder" Command="{Binding OpenOutputDirCommand}"/>
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="_About"        Click="OnAboutClick"/>
+            </MenuItem>
+        </Menu>
+
+        <!-- ── Toolbar ───────────────────────────────────────────────────────── -->
+        <Border DockPanel.Dock="Top"
+                Background="{DynamicResource BrushPanel}"
+                Padding="6,6">
+            <WrapPanel Orientation="Horizontal">
+                <Button Content="+ Files"       Command="{Binding AddFileCommand}"    Margin="3,0" Padding="10,4" ToolTip.Tip="Add .url/.txt files (Ctrl+O)"/>
+                <Button Content="+ URL"         Command="{Binding AddUrlCommand}"     Margin="3,0" Padding="10,4" ToolTip.Tip="Paste URLs (Ctrl+U)"/>
+                <Button Content="Paste"         Command="{Binding PasteCommand}"      Margin="3,0" Padding="10,4" ToolTip.Tip="Paste URLs from clipboard (Ctrl+V)"/>
+                <Button Content="Clear Done"    Command="{Binding ClearDoneCommand}"  Margin="3,0" Padding="10,4" ToolTip.Tip="Remove completed/errored items"/>
+                <Button Content="Cancel All"    Command="{Binding CancelAllCommand}"  Margin="3,0" Padding="10,4" ToolTip.Tip="Cancel all running downloads"/>
+                <Button Content="Console"       Command="{Binding ToggleConsoleCommand}" Margin="3,0" Padding="10,4" ToolTip.Tip="Toggle raw yt-dlp output panel"/>
+                <Button Content="Kill yt-dlp"  Command="{Binding KillAllCommand}"    Margin="3,0" Padding="10,4"
+                        Background="{DynamicResource BrushDanger}" Foreground="White"
+                        ToolTip.Tip="Kill every yt-dlp process on this machine"/>
+                <Button Content="{Binding UpdateButtonText}"
+                        Command="{Binding UpdateYtDlpCommand}"
+                        IsEnabled="{Binding UpdateButtonEnabled}"
+                        Margin="3,0" Padding="10,4"
+                        Background="{DynamicResource BrushSuccess}" Foreground="White"
+                        ToolTip.Tip="Run yt-dlp --update"/>
+            </WrapPanel>
+        </Border>
+
+        <!-- ── Drop zone ─────────────────────────────────────────────────────── -->
+        <Border x:Name="DropZone"
+                DockPanel.Dock="Top"
+                Height="80"
+                Background="{DynamicResource BrushPanel}"
+                BorderBrush="{DynamicResource BrushBorder}"
+                BorderThickness="1"
+                Margin="6,4"
+                Cursor="Hand">
+            <TextBlock Text="Drop .url / .txt / .lst files here   |   or click to browse"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Foreground="{DynamicResource BrushMutedText}"
+                       FontSize="14"/>
+        </Border>
+
+        <!-- ── Status bar ────────────────────────────────────────────────────── -->
+        <Border DockPanel.Dock="Bottom"
+                Background="{DynamicResource BrushPanel}"
+                Padding="4,3">
+            <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Grid.Column="0"
+                           Text="{Binding StatusText}"
+                           Foreground="{DynamicResource BrushText}"
+                           VerticalAlignment="Center"
+                           FontSize="12"/>
+                <TextBlock Grid.Column="1"
+                           Text="{Binding CurrentTip}"
+                           Foreground="{DynamicResource BrushMutedText}"
+                           VerticalAlignment="Center"
+                           FontSize="11"
+                           FontStyle="Italic"/>
+            </Grid>
+        </Border>
+
+        <!-- ── Console panel ─────────────────────────────────────────────────── -->
+        <Border DockPanel.Dock="Bottom"
+                IsVisible="{Binding IsConsoleVisible}"
+                Height="180"
+                Background="{DynamicResource BrushLogBg}"
+                BorderBrush="{DynamicResource BrushBorder}"
+                BorderThickness="0,1,0,0">
+            <ListBox ItemsSource="{Binding LogLines}"
+                     Background="{DynamicResource BrushLogBg}"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                     x:Name="LogListBox">
+                <ListBox.ItemTemplate>
+                    <DataTemplate x:DataType="models:LogLine">
+                        <TextBlock Text="{Binding Text}"
+                                   FontFamily="Consolas,Courier New,monospace"
+                                   FontSize="11"
+                                   Foreground="{Binding IsError,
+                                       Converter={x:Static conv:BoolToLogBrushConverter.Instance}}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <ListBox.ItemContainerTheme>
+                    <ControlTheme TargetType="ListBoxItem">
+                        <Setter Property="Padding" Value="4,1"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                    </ControlTheme>
+                </ListBox.ItemContainerTheme>
+            </ListBox>
+        </Border>
+
+        <!-- ── Download DataGrid ─────────────────────────────────────────────── -->
+        <dg:DataGrid x:Name="DownloadGrid"
+                     ItemsSource="{Binding Downloads}"
+                     AutoGenerateColumns="False"
+                     CanUserReorderColumns="False"
+                     CanUserResizeColumns="True"
+                     CanUserSortColumns="False"
+                     GridLinesVisibility="Horizontal"
+                     HeadersVisibility="Column"
+                     SelectionMode="Extended"
+                     Background="{DynamicResource BrushBg}"
+                     RowBackground="{DynamicResource BrushQueued}"
+                     HorizontalScrollBarVisibility="Disabled">
+
+            <dg:DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Cancel"           Command="{Binding $parent[Window].DataContext.CancelItemCommand}"
+                                                        CommandParameter="{Binding}"/>
+                    <MenuItem Header="Retry"            Command="{Binding $parent[Window].DataContext.RetryItemCommand}"
+                                                        CommandParameter="{Binding}"/>
+                    <MenuItem Header="Remove"           Command="{Binding $parent[Window].DataContext.RemoveItemCommand}"
+                                                        CommandParameter="{Binding}"/>
+                    <Separator/>
+                    <MenuItem Header="Copy URL"         Command="{Binding $parent[Window].DataContext.CopyUrlCommand}"
+                                                        CommandParameter="{Binding}"/>
+                    <MenuItem Header="Open output folder" Command="{Binding $parent[Window].DataContext.OpenItemFolderCommand}"
+                                                        CommandParameter="{Binding}"/>
+                </ContextMenu>
+            </dg:DataGrid.ContextMenu>
+
+            <dg:DataGrid.Columns>
+                <dg:DataGridTextColumn Header="#"          Binding="{Binding Id}"           Width="38"/>
+                <dg:DataGridTextColumn Header="Title / URL" Binding="{Binding DisplayTitle}" Width="380"/>
+                <dg:DataGridTextColumn Header="Status"     Binding="{Binding StatusDisplay}" Width="90"/>
+                <dg:DataGridTextColumn Header="Progress"   Binding="{Binding ProgressBar}"  Width="165"/>
+                <dg:DataGridTextColumn Header="Speed"      Binding="{Binding Speed}"         Width="90"/>
+                <dg:DataGridTextColumn Header="ETA"        Binding="{Binding Eta}"           Width="65"/>
+                <dg:DataGridTextColumn Header="Size"       Binding="{Binding Size}"          Width="80"/>
+            </dg:DataGrid.Columns>
+
+            <dg:DataGrid.RowTheme>
+                <ControlTheme TargetType="dg:DataGridRow" BasedOn="{StaticResource {x:Type dg:DataGridRow}}"
+                              x:DataType="vm:DownloadItemViewModel">
+                    <Setter Property="Background" Value="{Binding Status, Converter={StaticResource StatusBrush}}"/>
+                </ControlTheme>
+            </dg:DataGrid.RowTheme>
+
+        </dg:DataGrid>
+
+    </DockPanel>
+</Window>
