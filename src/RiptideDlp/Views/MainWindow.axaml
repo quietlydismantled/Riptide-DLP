@@ -6,7 +6,7 @@
         xmlns:dg="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls.DataGrid"
         x:Class="RiptideDlp.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/riptide-dlp.png"
         Title="{Binding WindowTitle}"
         Width="1000" Height="680"
         MinWidth="700" MinHeight="450"
