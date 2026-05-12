@@ -45,9 +45,18 @@ public partial class DownloadItemViewModel : ViewModelBase
         _                    => new string('─', 10)
     };
 
-    public string DisplayTitle => Title != Url
-        ? Title
-        : Url.Length > 90 ? Url[..87] + "..." : Url;
+    public string DisplayTitle
+    {
+        get
+        {
+            if (Title == Url || string.IsNullOrWhiteSpace(Title))
+                return Url.Length > 90 ? Url[..87] + "..." : Url;
+            return SafeTitle(Title);
+        }
+    }
+
+    static readonly Regex UnsafeChars = new(@"[<>:""/\\|?*\x00-\x1f]", RegexOptions.Compiled);
+    static string SafeTitle(string s) => UnsafeChars.Replace(s, "").Trim('.', ' ');
 
     public string StatusDisplay
     {

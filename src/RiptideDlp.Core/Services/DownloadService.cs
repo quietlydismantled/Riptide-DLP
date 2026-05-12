@@ -10,7 +10,8 @@ public class DownloadService
     static readonly Regex SizeRx  = new(@"(?i)\bof\s+~?\s*(.+?)\s+(?:at|in)\b",   RegexOptions.Compiled);
     static readonly Regex SpeedRx = new(@"(?i)\bat\s+(.+?/s)\b",                   RegexOptions.Compiled);
     static readonly Regex EtaRx   = new(@"(?i)\bETA\s+(\S+)",                      RegexOptions.Compiled);
-    static readonly Regex DstRx   = new(@"(?i)\[download\]\s+Destination:\s+(.+)", RegexOptions.Compiled);
+    static readonly Regex DstRx     = new(@"(?i)\[download\]\s+Destination:\s+(.+)",              RegexOptions.Compiled);
+    static readonly Regex AlreadyRx = new(@"(?i)\[download\]\s+(.+?)\s+has already been downloaded", RegexOptions.Compiled);
 
     int _activeCount;
     public int ActiveCount => _activeCount;
@@ -89,7 +90,13 @@ public class DownloadService
         }
 
         var d = DstRx.Match(t);
-        if (d.Success) dl.Title = Path.GetFileNameWithoutExtension(d.Groups[1].Value.Trim());
+        if (d.Success)
+            dl.Title = Path.GetFileNameWithoutExtension(d.Groups[1].Value.Trim());
+        else
+        {
+            var a = AlreadyRx.Match(t);
+            if (a.Success) dl.Title = Path.GetFileNameWithoutExtension(a.Groups[1].Value.Trim());
+        }
 
         return true;
     }
