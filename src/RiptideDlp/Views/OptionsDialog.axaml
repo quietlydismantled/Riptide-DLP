@@ -4,8 +4,9 @@
         x:Class="RiptideDlp.Views.OptionsDialog"
         x:DataType="vm:OptionsViewModel"
         Title="Options"
-        Width="540" Height="830"
-        CanResize="False"
+        Width="540" Height="600"
+        MinHeight="400"
+        CanResize="True"
         WindowStartupLocation="CenterOwner"
         Background="{DynamicResource BrushPanel}">
 

@@ -128,6 +128,14 @@ public partial class MainWindow : Window
             if (Vm.IsConsoleVisible) LogListBox.ScrollIntoView(Vm.LogLines.LastOrDefault()!);
         };
 
+        // Expand/collapse the console row when toggled
+        ApplyConsoleRowHeight();
+        Vm.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName == nameof(MainWindowViewModel.IsConsoleVisible))
+                ApplyConsoleRowHeight();
+        };
+
         Closing += (_, _) =>
         {
             var savedWidths = DownloadGrid.Columns.Select(c => (int)c.ActualWidth).ToArray();
@@ -184,6 +192,21 @@ public partial class MainWindow : Window
             foreach (var item in DownloadGrid.SelectedItems.Cast<DownloadItemViewModel>().ToList())
                 Vm.RemoveItemCommand.Execute(item);
             e.Handled = true;
+        }
+    }
+
+    // ── Console row sizing ────────────────────────────────────────────────────
+
+    GridLength _lastConsoleHeight = new(180);
+
+    void ApplyConsoleRowHeight()
+    {
+        if (Vm.IsConsoleVisible)
+            ContentGrid.RowDefinitions[2].Height = _lastConsoleHeight.Value > 0 ? _lastConsoleHeight : new GridLength(180);
+        else
+        {
+            if (ContentGrid.RowDefinitions[2].Height.Value > 0) _lastConsoleHeight = ContentGrid.RowDefinitions[2].Height;
+            ContentGrid.RowDefinitions[2].Height = new GridLength(0);
         }
     }
 

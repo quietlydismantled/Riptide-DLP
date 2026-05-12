@@ -56,7 +56,9 @@ public partial class DownloadItemViewModel : ViewModelBase
     }
 
     static readonly Regex UnsafeChars = new(@"[<>:""/\\|?*\x00-\x1f]", RegexOptions.Compiled);
-    static string SafeTitle(string s) => UnsafeChars.Replace(s, "").Trim('.', ' ');
+    static readonly Regex MultiSpace  = new(@"\s+",                    RegexOptions.Compiled);
+    static string SafeTitle(string s)
+        => MultiSpace.Replace(UnsafeChars.Replace(s, " "), " ").Trim().Trim('.', '-', '_').Trim();
 
     public string StatusDisplay
     {

@@ -1,6 +1,11 @@
 #post migration fixes
 
-drag and drop doesnt work from explorer/browser (browse from files still works, maybe .net appt threading?)
+done 	drag and drop doesnt work from explorer/browser (browse from files still works, maybe .net appt threading?) -fixed, possible UAC shinanigans
 
+done 	right click menu on listview items greyed out
 
+done 	kill dlp prompt just blank
 
+done	scrolling not working in console pane/no scroll bar
+
+done	bigger drag/drop pane, currently focus is on text field only

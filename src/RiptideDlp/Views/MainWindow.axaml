@@ -55,6 +55,16 @@
                 <Button Content="Clear Done"    Command="{Binding ClearDoneCommand}"  Margin="3,0" Padding="10,4" ToolTip.Tip="Remove completed/errored items"/>
                 <Button Content="Cancel All"    Command="{Binding CancelAllCommand}"  Margin="3,0" Padding="10,4" ToolTip.Tip="Cancel all running downloads"/>
                 <Button Content="Console"       Command="{Binding ToggleConsoleCommand}" Margin="3,0" Padding="10,4" ToolTip.Tip="Toggle raw yt-dlp output panel"/>
+                <StackPanel Orientation="Horizontal" Margin="10,0,3,0" VerticalAlignment="Center"
+                            ToolTip.Tip="Number of parallel downloads (1-16)">
+                    <TextBlock Text="Concurrent:" VerticalAlignment="Center" Margin="0,0,4,0"
+                               Foreground="{DynamicResource BrushText}"/>
+                    <NumericUpDown Value="{Binding Concurrent}"
+                                   Minimum="1" Maximum="16" Increment="1"
+                                   FormatString="0"
+                                   Width="90"
+                                   VerticalAlignment="Center"/>
+                </StackPanel>
                 <Button Content="Kill yt-dlp"  Command="{Binding KillAllCommand}"    Margin="3,0" Padding="10,4"
                         Background="{DynamicResource BrushDanger}" Foreground="White"
                         ToolTip.Tip="Kill every yt-dlp process on this machine"/>
@@ -103,68 +113,85 @@
             </Grid>
         </Border>
 
-        <!-- ── Console panel ─────────────────────────────────────────────────── -->
-        <Border DockPanel.Dock="Bottom"
-                IsVisible="{Binding IsConsoleVisible}"
-                Height="180"
-                Background="{DynamicResource BrushLogBg}"
-                BorderBrush="{DynamicResource BrushBorder}"
-                BorderThickness="0,1,0,0">
-            <ListBox ItemsSource="{Binding LogLines}"
-                     Background="{DynamicResource BrushLogBg}"
-                     ScrollViewer.VerticalScrollBarVisibility="Auto"
-                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                     x:Name="LogListBox">
-                <ListBox.ItemTemplate>
-                    <DataTemplate x:DataType="models:LogLine">
-                        <TextBlock Text="{Binding Text}"
-                                   FontFamily="Consolas,Courier New,monospace"
-                                   FontSize="11"
-                                   Foreground="{Binding IsError,
-                                       Converter={x:Static conv:BoolToLogBrushConverter.Instance}}"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-                <ListBox.ItemContainerTheme>
-                    <ControlTheme TargetType="ListBoxItem">
-                        <Setter Property="Padding" Value="4,1"/>
-                        <Setter Property="Background" Value="Transparent"/>
+        <!-- ── DataGrid + resizable console pane ───────────────────────────── -->
+        <Grid x:Name="ContentGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="0" MinHeight="0"/>
+            </Grid.RowDefinitions>
+
+            <!-- Download DataGrid -->
+            <dg:DataGrid Grid.Row="0"
+                         x:Name="DownloadGrid"
+                         ItemsSource="{Binding Downloads}"
+                         AutoGenerateColumns="False"
+                         CanUserReorderColumns="False"
+                         CanUserResizeColumns="True"
+                         CanUserSortColumns="False"
+                         GridLinesVisibility="Horizontal"
+                         HeadersVisibility="Column"
+                         SelectionMode="Extended"
+                         Background="{DynamicResource BrushBg}"
+                         RowBackground="{DynamicResource BrushQueued}"
+                         HorizontalScrollBarVisibility="Auto">
+
+                <dg:DataGrid.Columns>
+                    <dg:DataGridTextColumn Header="#"          Binding="{Binding Id}"           Width="38"/>
+                    <dg:DataGridTextColumn Header="Title / URL" Binding="{Binding DisplayTitle}" Width="380"/>
+                    <dg:DataGridTextColumn Header="Status"     Binding="{Binding StatusDisplay}" Width="90"/>
+                    <dg:DataGridTextColumn Header="Progress"   Binding="{Binding ProgressBar}"  Width="165"/>
+                    <dg:DataGridTextColumn Header="Speed"      Binding="{Binding Speed}"         Width="90"/>
+                    <dg:DataGridTextColumn Header="ETA"        Binding="{Binding Eta}"           Width="65"/>
+                    <dg:DataGridTextColumn Header="Size"       Binding="{Binding Size}"          Width="80"/>
+                </dg:DataGrid.Columns>
+
+                <dg:DataGrid.RowTheme>
+                    <ControlTheme TargetType="dg:DataGridRow" BasedOn="{StaticResource {x:Type dg:DataGridRow}}"
+                                  x:DataType="vm:DownloadItemViewModel">
+                        <Setter Property="Background" Value="{Binding Status, Converter={StaticResource StatusBrush}}"/>
                     </ControlTheme>
-                </ListBox.ItemContainerTheme>
-            </ListBox>
-        </Border>
+                </dg:DataGrid.RowTheme>
+            </dg:DataGrid>
 
-        <!-- ── Download DataGrid ─────────────────────────────────────────────── -->
-        <dg:DataGrid x:Name="DownloadGrid"
-                     ItemsSource="{Binding Downloads}"
-                     AutoGenerateColumns="False"
-                     CanUserReorderColumns="False"
-                     CanUserResizeColumns="True"
-                     CanUserSortColumns="False"
-                     GridLinesVisibility="Horizontal"
-                     HeadersVisibility="Column"
-                     SelectionMode="Extended"
-                     Background="{DynamicResource BrushBg}"
-                     RowBackground="{DynamicResource BrushQueued}"
-                     HorizontalScrollBarVisibility="Auto">
+            <!-- Splitter (only visible when console is open) -->
+            <GridSplitter Grid.Row="1"
+                          Height="5"
+                          HorizontalAlignment="Stretch"
+                          ResizeDirection="Rows"
+                          IsVisible="{Binding IsConsoleVisible}"
+                          Background="{DynamicResource BrushBorder}"
+                          Cursor="SizeNorthSouth"/>
 
-            <dg:DataGrid.Columns>
-                <dg:DataGridTextColumn Header="#"          Binding="{Binding Id}"           Width="38"/>
-                <dg:DataGridTextColumn Header="Title / URL" Binding="{Binding DisplayTitle}" Width="380"/>
-                <dg:DataGridTextColumn Header="Status"     Binding="{Binding StatusDisplay}" Width="90"/>
-                <dg:DataGridTextColumn Header="Progress"   Binding="{Binding ProgressBar}"  Width="165"/>
-                <dg:DataGridTextColumn Header="Speed"      Binding="{Binding Speed}"         Width="90"/>
-                <dg:DataGridTextColumn Header="ETA"        Binding="{Binding Eta}"           Width="65"/>
-                <dg:DataGridTextColumn Header="Size"       Binding="{Binding Size}"          Width="80"/>
-            </dg:DataGrid.Columns>
-
-            <dg:DataGrid.RowTheme>
-                <ControlTheme TargetType="dg:DataGridRow" BasedOn="{StaticResource {x:Type dg:DataGridRow}}"
-                              x:DataType="vm:DownloadItemViewModel">
-                    <Setter Property="Background" Value="{Binding Status, Converter={StaticResource StatusBrush}}"/>
-                </ControlTheme>
-            </dg:DataGrid.RowTheme>
-
-        </dg:DataGrid>
+            <!-- Console panel -->
+            <Border Grid.Row="2"
+                    IsVisible="{Binding IsConsoleVisible}"
+                    Background="{DynamicResource BrushLogBg}"
+                    BorderBrush="{DynamicResource BrushBorder}"
+                    BorderThickness="0,1,0,0">
+                <ListBox ItemsSource="{Binding LogLines}"
+                         Background="{DynamicResource BrushLogBg}"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                         x:Name="LogListBox">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate x:DataType="models:LogLine">
+                            <TextBlock Text="{Binding Text}"
+                                       FontFamily="Consolas,Courier New,monospace"
+                                       FontSize="11"
+                                       Foreground="{Binding IsError,
+                                           Converter={x:Static conv:BoolToLogBrushConverter.Instance}}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemContainerTheme>
+                        <ControlTheme TargetType="ListBoxItem">
+                            <Setter Property="Padding" Value="4,1"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                        </ControlTheme>
+                    </ListBox.ItemContainerTheme>
+                </ListBox>
+            </Border>
+        </Grid>
 
     </DockPanel>
 </Window>

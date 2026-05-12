@@ -35,6 +35,16 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty] bool   _isDarkMode;
     [ObservableProperty] bool   _updateButtonEnabled = true;
     [ObservableProperty] string _updateButtonText    = "Update yt-dlp";
+    [ObservableProperty] int    _concurrent;
+
+    partial void OnConcurrentChanged(int value)
+    {
+        if (value < 1) { Concurrent = 1; return; }
+        if (value > 16) { Concurrent = 16; return; }
+        if (_cfg.Concurrent == value) return;
+        _cfg.Concurrent = value;
+        _cfg.Save();
+    }
 
     // Set by View code-behind — platform calls that need TopLevel
     public Func<Task<IReadOnlyList<string>>>?    RequestOpenFiles  { get; set; }
@@ -71,6 +81,7 @@ public partial class MainWindowViewModel : ViewModelBase
     public MainWindowViewModel()
     {
         _isDarkMode = _cfg.DarkMode;
+        _concurrent = _cfg.Concurrent;
         _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
         _timer.Tick += OnTimerTick;
         _timer.Start();
@@ -118,8 +129,29 @@ public partial class MainWindowViewModel : ViewModelBase
     void ClearDone()
     {
         var toRemove = Downloads.Where(vm => vm.Status is DlStatus.Complete or DlStatus.Error or DlStatus.Cancelled).ToList();
-        foreach (var vm in toRemove) RemoveItem(vm);
+        foreach (var vm in toRemove)
+        {
+            if (vm.Status is DlStatus.Cancelled or DlStatus.Error)
+                DeletePartFiles(vm.Model.FilePath);
+            RemoveItem(vm);
+        }
         UpdateStatus();
+    }
+
+    static void DeletePartFiles(string filePath)
+    {
+        if (string.IsNullOrEmpty(filePath)) return;
+        var dir  = Path.GetDirectoryName(filePath);
+        var name = Path.GetFileName(filePath);
+        if (string.IsNullOrEmpty(dir) || string.IsNullOrEmpty(name) || !Directory.Exists(dir)) return;
+        try
+        {
+            foreach (var f in Directory.EnumerateFiles(dir, name + "*.part"))
+                try { File.Delete(f); } catch { }
+            foreach (var f in Directory.EnumerateFiles(dir, name + "*.ytdl"))
+                try { File.Delete(f); } catch { }
+        }
+        catch { }
     }
 
     [RelayCommand]
@@ -194,6 +226,7 @@ public partial class MainWindowViewModel : ViewModelBase
         _chromiumWarnShown = false;
         _nodeWarnLogged    = false;
         IsDarkMode = _cfg.DarkMode;
+        Concurrent = _cfg.Concurrent;
         ApplyTheme();
         _svc.StartNextInQueue(GetModels(), _cfg, Log);
     }
