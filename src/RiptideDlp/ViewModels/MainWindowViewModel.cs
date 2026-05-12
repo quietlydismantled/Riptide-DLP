@@ -248,7 +248,27 @@ public partial class MainWindowViewModel : ViewModelBase
     void CopyUrl(DownloadItemViewModel vm) => RequestCopyText?.Invoke(vm.Url);
 
     [RelayCommand]
-    void OpenItemFolder(DownloadItemViewModel vm) => OpenFolder(_cfg.OutputPath);
+    void OpenFile(DownloadItemViewModel vm)
+    {
+        var fp = vm.Model.FilePath;
+        if (!string.IsNullOrEmpty(fp) && File.Exists(fp))
+        {
+            try { Process.Start(new ProcessStartInfo(fp) { UseShellExecute = true }); }
+            catch { }
+        }
+        else
+        {
+            OpenFolder(_cfg.OutputPath);
+        }
+    }
+
+    [RelayCommand]
+    void OpenItemFolder(DownloadItemViewModel vm)
+    {
+        var fp = vm.Model.FilePath;
+        var dir = !string.IsNullOrEmpty(fp) ? Path.GetDirectoryName(fp) : null;
+        OpenFolder(dir ?? _cfg.OutputPath);
+    }
 
     // ── Public surface for View ──────────────────────────────────────────────────
 

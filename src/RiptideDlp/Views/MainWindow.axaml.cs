@@ -113,8 +113,13 @@ public partial class MainWindow : Window
         // DataGrid keyboard
         DownloadGrid.KeyDown += OnGridKeyDown;
 
-        // Context menu — built in code-behind so commands get the actual row item
+        // Context menu + double-click — built in code-behind so commands get the actual row item
         DownloadGrid.AddHandler(PointerPressedEvent, OnGridPointerPressed, handledEventsToo: true);
+        DownloadGrid.DoubleTapped += (_, _) =>
+        {
+            if (DownloadGrid.SelectedItem is DownloadItemViewModel item)
+                Vm.OpenFileCommand.Execute(item);
+        };
         DownloadGrid.ContextMenu = BuildRowContextMenu();
 
         // Scroll log to bottom when new lines arrive
@@ -207,12 +212,14 @@ public partial class MainWindow : Window
         {
             Items =
             {
+                Item("Open file",           item => Vm.OpenFileCommand.Execute(item)),
+                Item("Open output folder",  item => Vm.OpenItemFolderCommand.Execute(item)),
+                new Separator(),
                 Item("Cancel",              item => Vm.CancelItemCommand.Execute(item)),
                 Item("Retry",               item => Vm.RetryItemCommand.Execute(item)),
                 Item("Remove",              item => Vm.RemoveItemCommand.Execute(item)),
                 new Separator(),
                 Item("Copy URL",            item => Vm.CopyUrlCommand.Execute(item)),
-                Item("Open output folder",  item => Vm.OpenItemFolderCommand.Execute(item)),
             }
         };
     }

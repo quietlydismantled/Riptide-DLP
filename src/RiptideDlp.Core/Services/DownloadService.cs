@@ -91,11 +91,18 @@ public class DownloadService
 
         var d = DstRx.Match(t);
         if (d.Success)
-            dl.Title = Path.GetFileNameWithoutExtension(d.Groups[1].Value.Trim());
+        {
+            dl.FilePath = d.Groups[1].Value.Trim();
+            dl.Title    = Path.GetFileNameWithoutExtension(dl.FilePath);
+        }
         else
         {
             var a = AlreadyRx.Match(t);
-            if (a.Success) dl.Title = Path.GetFileNameWithoutExtension(a.Groups[1].Value.Trim());
+            if (a.Success)
+            {
+                dl.FilePath = a.Groups[1].Value.Trim();
+                dl.Title    = Path.GetFileNameWithoutExtension(dl.FilePath);
+            }
         }
 
         return true;

@@ -8,6 +8,7 @@ public class DownloadItem
     public int      Id       { get; }
     public string   Url      { get; }
     public string   Title    { get; set; }
+    public string   FilePath { get; set; } = "";
     public DlStatus Status   { get; set; } = DlStatus.Queued;
     public double   Pct      { get; set; }
     public string   Speed    { get; set; } = "—";
