@@ -64,20 +64,18 @@ public partial class MainWindow : Window
         {
             var box = new Window
             {
-                Title           = title,
-                Width           = 420,
-                Height          = 160,
-                CanResize       = false,
+                Title                 = title,
+                Width                 = 420,
+                SizeToContent         = SizeToContent.Height,
+                CanResize             = false,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
-                Background      = Application.Current?.FindResource("BrushPanel") as Avalonia.Media.IBrush
             };
             var tcs = new TaskCompletionSource<bool>();
             var panel = new StackPanel { Margin = new Thickness(16), Spacing = 12 };
             panel.Children.Add(new TextBlock
             {
-                Text        = message,
+                Text         = message,
                 TextWrapping = Avalonia.Media.TextWrapping.Wrap,
-                Foreground  = Application.Current?.FindResource("BrushText") as Avalonia.Media.IBrush
             });
             var btns = new StackPanel { Orientation = Avalonia.Layout.Orientation.Horizontal, HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Right, Spacing = 8 };
             var btnYes = new Button { Content = "Yes", Width = 70 };

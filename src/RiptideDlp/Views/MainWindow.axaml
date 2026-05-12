@@ -145,7 +145,7 @@
                      SelectionMode="Extended"
                      Background="{DynamicResource BrushBg}"
                      RowBackground="{DynamicResource BrushQueued}"
-                     HorizontalScrollBarVisibility="Disabled">
+                     HorizontalScrollBarVisibility="Auto">
 
             <dg:DataGrid.Columns>
                 <dg:DataGridTextColumn Header="#"          Binding="{Binding Id}"           Width="38"/>
