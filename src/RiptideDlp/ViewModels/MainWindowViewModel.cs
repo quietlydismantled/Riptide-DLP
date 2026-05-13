@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 using Avalonia.Styling;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -25,8 +26,30 @@ public partial class MainWindowViewModel : ViewModelBase
     bool          _updateRunning;
     readonly DispatcherTimer _timer;
 
-    public ObservableCollection<DownloadItemViewModel> Downloads { get; } = [];
-    public ObservableCollection<LogLine>               LogLines  { get; } = [];
+    public ObservableCollection<DownloadItemViewModel> Downloads        { get; } = [];
+    public ObservableCollection<LogLine>               LogLines         { get; } = [];
+    public ObservableCollection<LogLine>               FilteredLogLines { get; } = [];
+
+    [ObservableProperty] DownloadItemViewModel? _selectedDownload;
+
+    partial void OnSelectedDownloadChanged(DownloadItemViewModel? value) => RebuildFilteredLogLines();
+
+    static readonly Regex LinePrefix = new(@"^\[(?:ERR\s+)?(\d+)\]", RegexOptions.Compiled);
+
+    bool LineMatchesSelection(string line)
+    {
+        if (SelectedDownload == null) return true;          // no row selected → show everything
+        var m = LinePrefix.Match(line);
+        if (!m.Success) return true;                        // system line (e.g. [UPDATE]) → always show
+        return m.Groups[1].Value == SelectedDownload.Id.ToString();
+    }
+
+    void RebuildFilteredLogLines()
+    {
+        FilteredLogLines.Clear();
+        foreach (var l in LogLines)
+            if (LineMatchesSelection(l.Text)) FilteredLogLines.Add(l);
+    }
 
     [ObservableProperty] bool   _isConsoleVisible;
     [ObservableProperty] string _statusText    = "  Ready";
@@ -157,7 +180,7 @@ public partial class MainWindowViewModel : ViewModelBase
     [RelayCommand]
     void CancelAll()
     {
-        foreach (var vm in Downloads.Where(d => d.Status == DlStatus.Downloading).ToList())
+        foreach (var vm in Downloads.Where(d => d.Status is DlStatus.Downloading or DlStatus.Queued).ToList())
             _svc.CancelDlItem(vm.Model, GetModels(), _cfg, Log);
         RefreshAll(); UpdateStatus();
     }
@@ -366,9 +389,13 @@ public partial class MainWindowViewModel : ViewModelBase
 
     void Log(string line)
     {
-        bool isErr = line.StartsWith("[ERR ", StringComparison.Ordinal);
-        LogLines.Add(new LogLine(line, isErr));
+        bool isErr   = line.StartsWith("[ERR ", StringComparison.Ordinal);
+        var  logLine = new LogLine(line, isErr);
+        LogLines.Add(logLine);
         if (LogLines.Count > 5000) LogLines.RemoveAt(0);
+
+        if (LineMatchesSelection(line)) FilteredLogLines.Add(logLine);
+        if (FilteredLogLines.Count > 5000) FilteredLogLines.RemoveAt(0);
     }
 
     void UpdateStatus()

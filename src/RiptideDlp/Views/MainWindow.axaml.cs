@@ -122,10 +122,11 @@ public partial class MainWindow : Window
         };
         DownloadGrid.ContextMenu = BuildRowContextMenu();
 
-        // Scroll log to bottom when new lines arrive
-        Vm.LogLines.CollectionChanged += (_, _) =>
+        // Scroll log to bottom when new lines arrive (uses the filtered view bound to ListBox)
+        Vm.FilteredLogLines.CollectionChanged += (_, _) =>
         {
-            if (Vm.IsConsoleVisible) LogListBox.ScrollIntoView(Vm.LogLines.LastOrDefault()!);
+            if (Vm.IsConsoleVisible && Vm.FilteredLogLines.Count > 0)
+                LogListBox.ScrollIntoView(Vm.FilteredLogLines.LastOrDefault()!);
         };
 
         // Expand/collapse the console row when toggled
