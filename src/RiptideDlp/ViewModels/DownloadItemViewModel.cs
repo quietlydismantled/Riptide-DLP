@@ -91,4 +91,7 @@ public partial class DownloadItemViewModel : ViewModelBase
         Size     = Model.Size;
         LastLine = Model.LastLine;
     }
+
+    /// <summary>Force the Status binding to re-evaluate (e.g. after a theme switch).</summary>
+    public void NotifyStatusChanged() => OnPropertyChanged(nameof(Status));
 }

@@ -416,6 +416,11 @@ public partial class MainWindowViewModel : ViewModelBase
         if (Avalonia.Application.Current != null)
             Avalonia.Application.Current.RequestedThemeVariant =
                 _cfg.DarkMode ? ThemeVariant.Dark : ThemeVariant.Light;
+
+        // The row-background converter resolves to a concrete Brush at bind time,
+        // so theme changes don't propagate to already-rendered rows. Re-raise
+        // Status PropertyChanged on every row to force re-conversion.
+        foreach (var vm in Downloads) vm.NotifyStatusChanged();
     }
 
     static void OpenFolder(string path)

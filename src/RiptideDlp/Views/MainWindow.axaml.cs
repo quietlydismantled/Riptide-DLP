@@ -35,7 +35,11 @@ public partial class MainWindow : Window
             {
                 Title = "Select URL/text files",
                 AllowMultiple = true,
-                FileTypeFilter = [new("URL/Text files") { Patterns = ["*.url", "*.txt", "*.lst", "*.*"] }]
+                FileTypeFilter =
+                [
+                    new("All files")              { Patterns = ["*"] },
+                    new("URL / Text / List files") { Patterns = ["*.url", "*.txt", "*.lst"] },
+                ]
             });
             return files.Select(f => f.Path.LocalPath).ToList();
         };
@@ -181,7 +185,11 @@ public partial class MainWindow : Window
         {
             Title = "Select URL/text files",
             AllowMultiple = true,
-            FileTypeFilter = [new("URL/Text files") { Patterns = ["*.url", "*.txt", "*.lst", "*.*"] }]
+            FileTypeFilter =
+                [
+                    new("All files")              { Patterns = ["*"] },
+                    new("URL / Text / List files") { Patterns = ["*.url", "*.txt", "*.lst"] },
+                ]
         });
         if (files.Count > 0)
             Vm.AddUrlsFromDrop(files.Select(f => f.Path.LocalPath).ToList());
