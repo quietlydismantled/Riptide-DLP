@@ -37,8 +37,8 @@ public partial class MainWindow : Window
                 AllowMultiple = true,
                 FileTypeFilter =
                 [
-                    new("All files")              { Patterns = ["*"] },
                     new("URL / Text / List files") { Patterns = ["*.url", "*.txt", "*.lst"] },
+                    new("All files")               { Patterns = ["*"] },
                 ]
             });
             return files.Select(f => f.Path.LocalPath).ToList();
@@ -187,8 +187,8 @@ public partial class MainWindow : Window
             AllowMultiple = true,
             FileTypeFilter =
                 [
-                    new("All files")              { Patterns = ["*"] },
                     new("URL / Text / List files") { Patterns = ["*.url", "*.txt", "*.lst"] },
+                    new("All files")               { Patterns = ["*"] },
                 ]
         });
         if (files.Count > 0)
