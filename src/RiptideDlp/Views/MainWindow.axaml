@@ -72,7 +72,7 @@
                     <NumericUpDown Value="{Binding Concurrent}"
                                    Minimum="1" Maximum="16" Increment="1"
                                    FormatString="0"
-                                   Width="90"
+                                   Width="120" MinWidth="110"
                                    VerticalAlignment="Center"/>
                 </StackPanel>
             </WrapPanel>

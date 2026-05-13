@@ -264,11 +264,11 @@ public class DownloadService
         catch { return false; }
     }
 
-    public static (bool found, string version) GetRuntimeVersion(string exe)
+    public static (bool found, string version) GetRuntimeVersion(string exe, string versionFlag = "--version")
     {
         try
         {
-            var psi = new ProcessStartInfo(exe, "--version")
+            var psi = new ProcessStartInfo(exe, versionFlag)
             { UseShellExecute = false, RedirectStandardOutput = true, RedirectStandardError = true, CreateNoWindow = true };
             using var p = Process.Start(psi)!;
             var ver = p.StandardOutput.ReadLine() ?? p.StandardError.ReadLine() ?? "";

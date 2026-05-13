@@ -13,6 +13,7 @@ public partial class PrerequisiteEntryViewModel : ObservableObject
     public string  WhyYouNeed  { get; }
     public string  GetItUrl    { get; }
     public bool    Required    { get; }
+    public string  VersionFlag { get; }
 
     [ObservableProperty] bool   _isInstalled;
     [ObservableProperty] string _version = "—";
@@ -37,17 +38,29 @@ public partial class PrerequisiteEntryViewModel : ObservableObject
         catch { }
     }
 
-    public PrerequisiteEntryViewModel(string exe, string displayName, string whyYouNeed, string getItUrl, bool required)
+    public PrerequisiteEntryViewModel(string exe, string displayName, string whyYouNeed, string getItUrl,
+                                       bool required, string versionFlag = "--version")
     {
-        Exe = exe; DisplayName = displayName; WhyYouNeed = whyYouNeed; GetItUrl = getItUrl; Required = required;
+        Exe = exe; DisplayName = displayName; WhyYouNeed = whyYouNeed; GetItUrl = getItUrl;
+        Required = required; VersionFlag = versionFlag;
         Refresh();
     }
 
     public void Refresh()
     {
-        var (found, ver) = DownloadService.GetRuntimeVersion(Exe);
+        var (found, ver) = DownloadService.GetRuntimeVersion(Exe, VersionFlag);
         IsInstalled = found;
-        Version     = string.IsNullOrWhiteSpace(ver) ? "?" : ver.Trim();
+        Version     = CleanVersion(ver);
+    }
+
+    static string CleanVersion(string raw)
+    {
+        if (string.IsNullOrWhiteSpace(raw)) return "?";
+        var s = raw.Trim();
+        // ffmpeg prints "ffmpeg version N.N.N Copyright …" — keep just the number
+        var m = System.Text.RegularExpressions.Regex.Match(s, @"version\s+(\S+)", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+        if (m.Success) return m.Groups[1].Value;
+        return s;
     }
 }
 
@@ -61,7 +74,7 @@ public partial class PrerequisitesViewModel : ViewModelBase
 
         new("ffmpeg", "FFmpeg",
             "Glues video and audio streams together (YouTube ships them separately, like IKEA furniture). Also handles subtitles, thumbnails, conversions, and roughly 1000 other things you'll appreciate eventually.",
-            "https://www.gyan.dev/ffmpeg/builds/", required: true),
+            "https://www.gyan.dev/ffmpeg/builds/", required: true, versionFlag: "-version"),
 
         new("node", "Node.js",
             "YouTube hides some video URLs behind JavaScript puzzles. Node solves them. Without it, most videos still work, but the trickier ones will fail with a sad little error.",
