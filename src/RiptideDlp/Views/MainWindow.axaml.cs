@@ -142,6 +142,9 @@ public partial class MainWindow : Window
             Vm.SaveColumnWidths(savedWidths);
             Vm.OnClosing();
         };
+
+        // Startup prereq check — open the dialog if anything required is missing
+        _ = ShowPrereqsIfMissingAsync();
     }
 
     // ── DragDrop ──────────────────────────────────────────────────────────────
@@ -255,5 +258,21 @@ public partial class MainWindow : Window
             await Vm.RequestConfirm(
                 "Riptide DLP\n\nA drag-and-drop GUI wrapper for yt-dlp.\nDrop .url / .txt / .lst files or paste URLs to start downloading.",
                 "About Riptide DLP");
+    }
+
+    // ── Prerequisites dialog ─────────────────────────────────────────────────
+
+    async void OnPrereqsClick(object? s, RoutedEventArgs e)
+    {
+        var dlg = new PrerequisitesDialog();
+        await dlg.ShowDialog(this);
+    }
+
+    async Task ShowPrereqsIfMissingAsync()
+    {
+        var vm = new PrerequisitesViewModel();
+        if (!vm.AnyRequiredMissing) return;
+        var dlg = new PrerequisitesDialog();
+        await dlg.ShowDialog(this);
     }
 }

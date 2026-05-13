@@ -39,8 +39,18 @@
                           Icon="{Binding IsDarkMode, Converter={x:Static conv:BoolToCheckmarkConverter.Instance}}"/>
                 <MenuItem Header="Open _output folder" Command="{Binding OpenOutputDirCommand}"/>
             </MenuItem>
+            <MenuItem Header="_Tools">
+                <MenuItem Header="_Update yt-dlp"
+                          Command="{Binding UpdateYtDlpCommand}"
+                          IsEnabled="{Binding UpdateButtonEnabled}"/>
+                <Separator/>
+                <MenuItem Header="_Kill all yt-dlp processes"
+                          Command="{Binding KillAllCommand}"/>
+            </MenuItem>
             <MenuItem Header="_Help">
-                <MenuItem Header="_About"        Click="OnAboutClick"/>
+                <MenuItem Header="_Prerequisites…" Click="OnPrereqsClick"/>
+                <Separator/>
+                <MenuItem Header="_About"          Click="OnAboutClick"/>
             </MenuItem>
         </Menu>
 
@@ -65,15 +75,6 @@
                                    Width="90"
                                    VerticalAlignment="Center"/>
                 </StackPanel>
-                <Button Content="Kill yt-dlp"  Command="{Binding KillAllCommand}"    Margin="3,0" Padding="10,4"
-                        Background="{DynamicResource BrushDanger}" Foreground="White"
-                        ToolTip.Tip="Kill every yt-dlp process on this machine"/>
-                <Button Content="{Binding UpdateButtonText}"
-                        Command="{Binding UpdateYtDlpCommand}"
-                        IsEnabled="{Binding UpdateButtonEnabled}"
-                        Margin="3,0" Padding="10,4"
-                        Background="{DynamicResource BrushSuccess}" Foreground="White"
-                        ToolTip.Tip="Run yt-dlp --update"/>
             </WrapPanel>
         </Border>
 
