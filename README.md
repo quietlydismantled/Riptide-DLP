@@ -333,4 +333,4 @@ Riptide DLP: the unbelievably convenient, mildly dramatic, aggressively clickabl
 
 Drop URLs in. Get videos out. Pretend this needed a product launch.
 
-And in case it wasn't painfully obvious, this started as a joke project (and still very much is) built out of necessity. hope someone else on the interwebs finds it useful (or at least gets a laugh out of the the readme) Happy Ripping 😂
+And in case it wasn't painfully obvious, this started as a joke project (and still very much is) built out of necessity. hope someone else on the interwebs finds it useful (or at least gets a laugh out of the the readme) Happy Ripping folks 😂
