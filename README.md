@@ -53,7 +53,7 @@ sudo apt install ffmpeg nodejs        # FFmpeg + Node from apt
 pip install yt-dlp                    # yt-dlp from pip, because newer is usually better
 ```
 
-Make sure all three tools are on your `$PATH`. Riptide DLP looks for `yt-dlp`, `ffmpeg`, and `node` by name, because telepathy support missed the release window. (but probably still didn't beat the light, so feel free to bump tunes and make faces it so it wonders if the gas was worth it)
+Make sure all three tools are on your `$PATH`. Riptide DLP looks for `yt-dlp`, `ffmpeg`, and `node` by name, because telepathy support missed the release window. (but probably still didn't beat the light, so feel free to bump tunes and make faces at it so it wonders if the gas was worth it)
 ---
 
 ## Installation
