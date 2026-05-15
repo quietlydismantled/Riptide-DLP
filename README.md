@@ -97,6 +97,36 @@ xattr -d com.apple.quarantine ./RiptideDlp
 
 ---
 
+## Screenshots: AWW YEAH, LOOK AT THIS MAGNIFICENT UI!!!
+
+Behold: a window!!! Not just any window. A window with a **big drop box**.
+
+<p align="center">
+  <img src="docs/main-ui.png" alt="Riptide DLP main window, featuring the majestic drop zone" width="900">
+</p>
+
+<p align="center"><em>The drop zone: large enough to be seen from orbit, probably.</em></p>
+
+Drop a link from your browser's URL field? **Yeah buddy.**
+
+A `.url` file from your desktop? **Absolutely.**
+
+A lovingly hand-crafted `.lst` or `.txt` file containing one URL per line? **Now you're operating at peak civilization.**
+
+A meticulously curated printed copy of every cat video URL in existence thrown from a four-story fire escape?
+
+...well, maybe, if you have incredible aim.
+
+And if your work's vision insurance is terrible and you somehow can't drag something into a drop box the size of a football field, there's more good news!!! Thanks to modern UI frameworks and possible coding oversight, you can probably just drag it **somewhere else in the UI** and it will still get added to the download queue.
+
+Probably.
+
+If it doesn't, just try again. Somewhere different this time.
+
+> **Disclaimer:** I have not tested every pixel of the UI, because there are only so many hours in a day and only so much coffee in the bloodstream. Bug reports are welcome.
+
+---
+
 ## Features You Probably Could Live Without, But Why Risk It?
 
 ### Adding URLs, Now With Multiple Human-Compatible Rituals
