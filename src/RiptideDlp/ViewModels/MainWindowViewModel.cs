@@ -415,9 +415,9 @@ public partial class MainWindowViewModel : ViewModelBase
         var e     = Downloads.Count(d => d.Status == DlStatus.Error);
         var total = Downloads.Count;
         StatusText  = $"  Active: {a}   Queued: {q}   Done: {done}   Errors: {e}";
-        WindowTitle = a > 0     ? $"yt-dlp Download Manager  ({a}/{total} active)"
-                    : total > 0 ? $"yt-dlp Download Manager  ({done} done{(e > 0 ? $", {e} errors" : "")})"
-                    :              "yt-dlp Download Manager";
+        WindowTitle = a > 0     ? $"Riptide DLP  ({a}/{total} active)"
+                    : total > 0 ? $"Riptide DLP  ({done} done{(e > 0 ? $", {e} errors" : "")})"
+                    :              "Riptide DLP";
     }
 
     void ApplyTheme()
