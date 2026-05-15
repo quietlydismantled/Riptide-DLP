@@ -1,10 +1,10 @@
 # Riptide DLP
 
-**Are you tired of typing commands like some kind of wizard trapped in a terminal?**
+**Greetings, brave internet traveler! Are you tired of typing commands like some kind of wizard trapped in a terminal dungeon?**
 
-Introducing **Riptide DLP**: the astonishing, life-enhancing, barely-believable cross-platform GUI wrapper for [yt-dlp](https://github.com/yt-dlp/yt-dlp) that lets you drop URLs in and get videos out!!!
+Introducing **Riptide DLP**: the astonishing, life-enhancing, barely-believable cross-platform GUI wrapper for [yt-dlp](https://github.com/yt-dlp/yt-dlp) that lets you drop URLs in and get videos out!!! Links go in! Files come out! Tiny productivity confetti rains from the heavens!
 
-That's right: it is a graphical interface for a tool that already does the hard part. Revolutionary? Perhaps. Convenient? Absolutely. Built with [Avalonia UI](https://avaloniaui.net/) + .NET 8, because apparently buttons need infrastructure.
+That's right: it is a graphical interface for a tool that already does the hard part. Revolutionary? Perhaps. Convenient? Absolutely. Sensible? Alarmingly! Built with [Avalonia UI](https://avaloniaui.net/) + .NET 8, because apparently buttons need infrastructure and somebody had to give the URLs a little house to live in.
 
 ![Platform: Windows / Linux / macOS](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-blue)
 ![.NET 8](https://img.shields.io/badge/.NET-8-purple)
@@ -15,15 +15,15 @@ That's right: it is a graphical interface for a tool that already does the hard 
   <img src="docs/no-idea.gif" alt="The author, hard at work" width="400">
 </p>
 
-<p align="center"><em>The author, moments before shipping an unstoppable productivity appliance.</em></p>
+<p align="center"><em>The author, moments before shipping an unstoppable productivity appliance into polite society.</em></p>
 
 ---
 
 ## But Wait, There Are Prerequisites!!!
 
-Riptide DLP is a GUI wrapper, which means it proudly delegates the actually difficult work to external tools, like any respectable middle manager.
+Riptide DLP is a GUI wrapper, which means it proudly delegates the actually difficult work to external tools, like any respectable middle manager wearing a tiny crown.
 
-You will need these tiny little miracle engines installed:
+Before the show can begin, you will need these tiny little miracle engines installed:
 
 | Tool | Required? | What it does |
 |---|---|---|
@@ -68,7 +68,7 @@ Pre-built self-contained binaries are available on the [**Releases page**](https
 | macOS x64 (Intel) | `riptide-dlp-vX.Y.Z-macos-x64.tar.gz` |
 | macOS ARM64 (Apple Silicon) | `riptide-dlp-vX.Y.Z-macos-arm64.tar.gz` |
 
-**Windows:** Extract the zip, double-click `RiptideDlp.exe`, and behold: a window.
+**Windows:** Extract the zip, double-click `RiptideDlp.exe`, and behold: a window. Incredible. Historians are still recovering.
 
 **Linux:**
 ```bash
@@ -88,18 +88,18 @@ xattr -d com.apple.quarantine ./RiptideDlp
 
 ---
 
-## Quick Start: Four Steps to Unthinkable Luxury
+## Quick Start: Four Steps to Unthinkable Luxury and Mildly Responsible File Acquisition
 
 1. Drop `.url`, `.txt`, or `.lst` files onto the **drop zone**. One URL per line in text files, **because modern civilization has rules**.
 2. Or **click the drop zone** to browse for files, for those who prefer clicking rectangles.
 3. Or use **`+ Files`**, **`+ URL`**, or **Paste** in the toolbar to add URLs directly. We have options!!!
-4. Downloads start automatically, up to N at a time, configurable in the toolbar or **Options**. Because sometimes one video at a time is simply too medieval.
+4. Downloads start automatically, up to N at a time, configurable in the toolbar or **Options**. Because sometimes one video at a time is simply too medieval, and you are clearly a person of culture and questionable bandwidth restraint.
 
 ---
 
 ## Screenshots: OH YEAH, LOOK AT THIS MAGNIFICENT UI!!!
 
-Behold: a window!!! Not just any window. A window with a **big drop box**.
+Behold: a window!!! Not just any window. A window with a **big drop box**. A heroic rectangle. A link receptacle. A digital mouth that politely accepts your offerings and tries not to embarrass anybody.
 
 <p align="center">
   <img src="docs/main-ui.png" alt="Riptide DLP main window, featuring the majestic drop zone" width="900">
@@ -109,21 +109,21 @@ Behold: a window!!! Not just any window. A window with a **big drop box**.
 
 Drop a link from your browser's URL field? **Yeah buddy.**
 
-A `.url` file from your desktop? **Absolutely.**
+A `.url` file from your desktop? **Absolutely.** Toss it in there like a tiny paper airplane full of questionable media choices.
 
-A lovingly hand-crafted `.lst` or `.txt` file containing one URL per line? **Now you're operating at peak automation excellency.**
+A lovingly hand-crafted `.lst` or `.txt` file containing one URL per line? **Now you're operating at peak automation excellency.** Look at you, arranging URLs in rows like a responsible little spreadsheet goblin.
 
 A **meticulously curated printed copy of every cat video URL in existence dropped from a four-story fire escape**?
 
-...well, maybe, if you have incredible aim.
+...well, maybe, if you have incredible aim and the wind conditions are emotionally supportive.
 
 And if your work's vision insurance is terrible and you somehow can't drag something into a drop box the size of a football field, there's more good news!!! Thanks to modern UI frameworks and possible coding oversight, you can probably just drag it **somewhere else in the UI** and it will still get added to the download queue anyway.
 
 Probably.
 
-If it doesn't, just try again. Just, Somewhere different this time.
+If it doesn't, just try again. Somewhere different this time. Computers love confidence, repetition, and occasionally being threatened with a restart.
 
-> **Disclaimer:** I have not tested every pixel of the UI, because there are only so many hours in a day and only so much coffee in the bloodstream. Bug reports are welcome.
+> **Disclaimer:** I have not tested every pixel of the UI, because there are only so many hours in a day, only so much coffee in the bloodstream, and frankly some pixels need to learn independence. Bug reports are welcome.
 
 ---
 
@@ -131,7 +131,7 @@ If it doesn't, just try again. Just, Somewhere different this time.
 
 ### Adding URLs, Now With Multiple Human-Compatible Rituals
 
-Riptide DLP accepts URLs through several paths. Choose your favorite method of telling a computer where the video lives:
+Riptide DLP accepts URLs through several paths. Choose your favorite method of telling a computer where the video lives, then watch it nod thoughtfully and bother yt-dlp about it:
 
 | Method | How |
 |---|---|
@@ -147,7 +147,7 @@ All sources split on newlines automatically. Blank lines and exact duplicates ar
 
 ### The Download Queue: A Table, But Make It Dramatic
 
-The main table shows all downloads with live-updating columns, because staring at progress bars is a lifestyle:
+The main table shows all downloads with live-updating columns, because staring at progress bars is a lifestyle and this app respects your hobbies:
 
 | Column | What it shows |
 |---|---|
@@ -195,7 +195,7 @@ The Console panel shows raw yt-dlp output, which is useful for debugging errors,
 - **Select a row** in the download queue to filter the console to that download's output only
 - Deselect by clicking empty space to see all output
 
-It is like lifting the hood of a car, except the car is Python-adjacent and occasionally mad at YouTube.
+It is like lifting the hood of a car, except the car is Python-adjacent, occasionally mad at YouTube, and making noises that probably mean something.
 
 ---
 
@@ -362,6 +362,6 @@ macOS is simply protecting you from the terrifying concept of software you inten
 
 Riptide DLP: the unbelievably convenient, mildly dramatic, aggressively clickable way to ask yt-dlp and FFmpeg to do what they were already very good at doing!!!
 
-Drop URLs in. Get videos out. Pretend this needed a product launch.
+Drop URLs in. Get videos out. Pretend this needed a product launch. Applaud politely as several excellent command-line utilities do all the hard work backstage.
 
-And in case it wasn't painfully obvious, this started as a joke project (and still very much is) built out of necessity. hope someone else on the interwebs finds it useful (or at least gets a laugh out of the the readme) Happy Ripping folks 😂
+And in case it wasn't painfully obvious, this started as a joke project (and still very much is) built out of necessity. hope someone else on the interwebs finds it useful (or at least gets a laugh out of the the readme) Happy ripping, folks. May your queues be orderly, your cookies be valid, and your FFmpeg never wander off into the bushes. 😂
