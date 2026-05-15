@@ -58,12 +58,21 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty] bool   _isDarkMode;
     [ObservableProperty] bool   _updateButtonEnabled = true;
     [ObservableProperty] string _updateButtonText    = "Update yt-dlp";
-    [ObservableProperty] int    _concurrent;
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ConcurrentTooltip))]
+    int _concurrent;
+
+    public string ConcurrentTooltip => Concurrent switch
+    {
+        99    => "YOU HAVE NOW (PROBABLY) ACCIDENTALLY ACTIVATED EXTREME DATA HOARDER MODE. PREPARING DISKS FOR TAKEOFF! 🚀",
+        > 20  => "SRSLY?! well, apparently your connection is way better than mine, so congrats 😭",
+        _     => "Number of parallel downloads (1–99)"
+    };
 
     partial void OnConcurrentChanged(int value)
     {
         if (value < 1) { Concurrent = 1; return; }
-        if (value > 16) { Concurrent = 16; return; }
+        if (value > 99) { Concurrent = 99; return; }
         if (_cfg.Concurrent == value) return;
         _cfg.Concurrent = value;
         _cfg.Save();

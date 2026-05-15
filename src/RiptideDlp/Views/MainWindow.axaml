@@ -66,11 +66,11 @@
                 <Button Content="Cancel All"    Command="{Binding CancelAllCommand}"  Margin="3,0" Padding="10,4" ToolTip.Tip="Cancel all running downloads"/>
                 <Button Content="Console"       Command="{Binding ToggleConsoleCommand}" Margin="3,0" Padding="10,4" ToolTip.Tip="Toggle raw yt-dlp output panel"/>
                 <StackPanel Orientation="Horizontal" Margin="10,0,3,0" VerticalAlignment="Center"
-                            ToolTip.Tip="Number of parallel downloads (1-16)">
+                            ToolTip.Tip="{Binding ConcurrentTooltip}">
                     <TextBlock Text="Concurrent:" VerticalAlignment="Center" Margin="0,0,4,0"
                                Foreground="{DynamicResource BrushText}"/>
                     <NumericUpDown Value="{Binding Concurrent}"
-                                   Minimum="1" Maximum="16" Increment="1"
+                                   Minimum="1" Maximum="99" Increment="1"
                                    FormatString="0"
                                    Width="120" MinWidth="110"
                                    VerticalAlignment="Center"/>
