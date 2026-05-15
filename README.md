@@ -90,14 +90,14 @@ xattr -d com.apple.quarantine ./RiptideDlp
 
 ## Quick Start: Four Steps to Unthinkable Luxury
 
-1. Drop `.url`, `.txt`, or `.lst` files onto the **drop zone**. One URL per line in text files, because civilization has rules.
+1. Drop `.url`, `.txt`, or `.lst` files onto the **drop zone**. One URL per line in text files, **because modern civilization has rules**.
 2. Or **click the drop zone** to browse for files, for those who prefer clicking rectangles.
 3. Or use **`+ Files`**, **`+ URL`**, or **Paste** in the toolbar to add URLs directly. We have options!!!
 4. Downloads start automatically, up to N at a time, configurable in the toolbar or **Options**. Because sometimes one video at a time is simply too medieval.
 
 ---
 
-## Screenshots: AWW YEAH, LOOK AT THIS MAGNIFICENT UI!!!
+## Screenshots: OH YEAH, LOOK AT THIS MAGNIFICENT UI!!!
 
 Behold: a window!!! Not just any window. A window with a **big drop box**.
 
