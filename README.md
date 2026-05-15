@@ -113,7 +113,7 @@ A `.url` file from your desktop? **Absolutely.**
 
 A lovingly hand-crafted `.lst` or `.txt` file containing one URL per line? **Now you're operating at peak automation excellency.**
 
-A meticulously curated printed copy of every cat video URL in existence thrown from a four-story fire escape?
+A **meticulously curated printed copy of every cat video URL in existence thrown from a four-story fire escape**?
 
 ...well, maybe, if you have incredible aim.
 
