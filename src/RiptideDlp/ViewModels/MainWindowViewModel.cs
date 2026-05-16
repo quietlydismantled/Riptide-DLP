@@ -53,7 +53,7 @@ public partial class MainWindowViewModel : ViewModelBase
 
     [ObservableProperty] bool   _isConsoleVisible;
     [ObservableProperty] string _statusText    = "  Ready";
-    [ObservableProperty] string _windowTitle   = "Riptide DLP";
+    [ObservableProperty] string _windowTitle   = "RiptideDLP";
     [ObservableProperty] string _currentTip    = Tips[0] + "  ";
     [ObservableProperty] bool   _isDarkMode;
     [ObservableProperty] bool   _updateButtonEnabled = true;
@@ -415,9 +415,9 @@ public partial class MainWindowViewModel : ViewModelBase
         var e     = Downloads.Count(d => d.Status == DlStatus.Error);
         var total = Downloads.Count;
         StatusText  = $"  Active: {a}   Queued: {q}   Done: {done}   Errors: {e}";
-        WindowTitle = a > 0     ? $"Riptide DLP  ({a}/{total} active)"
-                    : total > 0 ? $"Riptide DLP  ({done} done{(e > 0 ? $", {e} errors" : "")})"
-                    :              "Riptide DLP";
+        WindowTitle = a > 0     ? $"RiptideDLP  ({a}/{total} active)"
+                    : total > 0 ? $"RiptideDLP  ({done} done{(e > 0 ? $", {e} errors" : "")})"
+                    :              "RiptideDLP";
     }
 
     void ApplyTheme()

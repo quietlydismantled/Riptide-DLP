@@ -265,8 +265,8 @@ public partial class MainWindow : Window
     {
         if (Vm.RequestConfirm != null)
             await Vm.RequestConfirm(
-                "Riptide DLP\n\nA drag-and-drop GUI wrapper for yt-dlp.\nDrop .url / .txt / .lst files or paste URLs to start downloading.",
-                "About Riptide DLP");
+                "RiptideDLP\n\nA drag-and-drop GUI wrapper for yt-dlp.\nDrop .url / .txt / .lst files or paste URLs to start downloading.",
+                "About RiptideDLP");
     }
 
     // ── Prerequisites dialog ─────────────────────────────────────────────────

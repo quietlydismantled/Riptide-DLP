@@ -30,7 +30,7 @@
 
         <!-- Header -->
         <TextBlock DockPanel.Dock="Top"
-                   Text="Riptide DLP shells out to external tools to do the actual work. Here's what they're for and whether you have them."
+                   Text="RiptideDLP shells out to external tools to do the actual work. Here's what they're for and whether you have them."
                    TextWrapping="Wrap"
                    Margin="16,14,16,4"
                    Foreground="{DynamicResource BrushMutedText}"
